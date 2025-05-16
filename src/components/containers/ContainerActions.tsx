@@ -3,16 +3,13 @@
 import { useTransition, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ContainerDTO } from "@/lib/containers/types";
+import { ContainerLogsModal } from "@/components/containers/ContainersLogModal";
 import { toast } from "sonner";
 import {
     Dialog,
     DialogContent,
-    DialogTitle,
-    DialogHeader,
-    DialogDescription,
-    DialogFooter,
+    DialogTitle
 } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface Props {
     container: ContainerDTO;
@@ -107,22 +104,13 @@ export function ContainerActions({ container, onUpdatedAction }: Props) {
                 </DialogContent>
             </Dialog>
 
-            <Dialog open={showLogs} onOpenChange={setShowLogs}>
-                <DialogContent className="w-full max-w-2xl md:max-w-4xl lg:max-w-6xl max-h-[80vh]">
-                    <DialogHeader>
-                        <DialogTitle className="text-blue-700">Logs de {container.name}</DialogTitle>
-                        <DialogDescription className="text-sm text-muted-foreground">
-                            Saída do container nos últimos minutos.
-                        </DialogDescription>
-                    </DialogHeader>
-                    <ScrollArea className="h-[60vh] rounded-md border p-2 bg-black text-green-400 text-sm font-mono whitespace-pre-wrap">
-                        {logs || "Carregando..."}
-                    </ScrollArea>
-                    <DialogFooter className="pt-4">
-                        <Button onClick={() => setShowLogs(false)}>Fechar</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+            <ContainerLogsModal
+                open={showLogs}
+                onOpenChangeAction={setShowLogs}
+                container={container}
+                logs={logs}
+                onRefreshLogsAction={openLogs}
+            />
 
         </>
     );
